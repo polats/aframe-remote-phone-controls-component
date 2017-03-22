@@ -20,9 +20,10 @@
       -->
 
       <a-entity camera
-                position="0 1 0"
-                universal-controls
+                position="0 1 0">
+                <a-entity
                 remote-phone-controls="target: #cursor">
+              </a-entity>
       </a-entity>
 
       <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>

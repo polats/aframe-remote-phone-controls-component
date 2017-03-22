@@ -84,7 +84,7 @@ AFRAME.registerComponent('remote-phone-controls', {
             }
             return null;
         }
-    });    
+    });
   },
 
   /**
@@ -104,7 +104,18 @@ AFRAME.registerComponent('remote-phone-controls', {
    */
   tick: function (t) {
       var data = this.data;
-      console.log(data.orientation);
+      var el = this.el;
+
+      // rotate raycaster depending on orientation
+      var rotation = el.getAttribute('rotation');
+
+      rotation.y = data.orientation.alpha;
+      rotation.x = data.orientation.beta;
+
+      el.setAttribute('rotation', rotation);
+
+      rotation = el.getAttribute('rotation');
+
   },
 
   /**
