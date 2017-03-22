@@ -21,9 +21,11 @@
 
       <a-entity camera
                 position="0 1 0"
-                remote-phone-controls>
+                universal-controls
+                remote-phone-controls="target: #cursor">
       </a-entity>
 
+      <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
 
       <!-- Ground -->
       <a-grid static-body></a-grid>
