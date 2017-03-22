@@ -3,11 +3,88 @@
     <title>A-Frame Remote Phone Controls Component - Basic</title>
     <meta name="description" content="Basic example for Remote Phone Controls component."></meta>
     <script src="../build.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
   </head>
   <body>
+
     <a-scene>
-      <a-assets></a-assets>
-      <a-entity remote-phone-controls=""></a-entity>
+
+      <!--
+      <a-entity camera
+                kinematic-body
+                jump-ability
+                position="0 1 0"
+                universal-controls
+                remote-phone-controls>
+      </a-entity>
+      -->
+
+      <a-entity camera
+                position="0 1 0"
+                remote-phone-controls>
+      </a-entity>
+
+
+      <!-- Ground -->
+      <a-grid static-body></a-grid>
+
+      <!-- Tower -->
+      <a-box id="tower"
+              color="#39BB82"
+              width="10" height="5" depth="6"
+              position="0 2.5 -15"
+              static-body></a-box>
+
+      <!-- Ramp -->
+      <a-box id="ramp"
+             color="#39BB82"
+             width="1" height="10" depth="18.86796"
+             position="0 -4.04 -6.33"
+             rotation="30 0 0"
+             static-body></a-box>
+
+      <!-- Moving platforms -->
+      <a-box id="platform1"
+             color="#39BB82"
+             width="4" height="0.25" depth="4"
+             position="7 0.125 -15"
+             velocity="0 0 0"
+             toggle-velocity="axis: z; min: -5; max: 5;"
+             static-body></a-box>
+      <a-box id="platform2"
+             color="#39BB82"
+             width="4" height="0.25" depth="4"
+             position="-7 0.125 -15"
+             velocity="0 0 0"
+             toggle-velocity="axis: y; min: 0.125; max: 5;"
+             static-body></a-box>
+
+      <!-- Blocks -->
+      <a-box color="#39BB82"
+             width="1" height="1" depth="1"
+             position="15 2 0.6"
+             dynamic-body></a-box>
+      <a-box color="#39BB82"
+             width="1" height="1" depth="1"
+             position="15 2 -0.6"
+             dynamic-body></a-box>
+      <a-box color="#39BB82"
+             width="1" height="1" depth="1"
+             position="15 4 0"
+             dynamic-body></a-box>
+      <a-cylinder color="#39BB82"
+             rotation="90 0 0"
+             position="15 2 4"
+             dynamic-body></a-cylinder>
+      <a-sphere color="#39BB82"
+             position="15 2 -4"
+             dynamic-body></a-sphere>
+
+      <!-- Lighting -->
+      <a-light type="ambient" color="#bbb"></a-light>
+      <a-light color="#ccc" position="0 30 0" distance="100" intensity="0.4" type="point"></a-light>
+      <a-light color="#ccc" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
+
     </a-scene>
 
     <!-- GitHub Corner. -->

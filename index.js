@@ -18,7 +18,24 @@ AFRAME.registerComponent('remote-phone-controls', {
   /**
    * Called once when component is attached. Generally for initial setup.
    */
-  init: function () { },
+  init: function () {
+    this.data.orientation =
+    {
+      alpha: 0.0,
+      beta: 0.0,
+      gamma: 0.0
+    }
+
+    // orientation values
+    var orientation = this.data.orientation;
+
+    window.addEventListener('deviceorientation', function (evt) {
+        orientation.alpha =  evt.alpha;
+        orientation.beta = evt.beta;
+        orientation.gamma = evt.gamma;
+		}, true);
+
+  },
 
   /**
    * Called when component is attached and when component data changes.
@@ -35,7 +52,10 @@ AFRAME.registerComponent('remote-phone-controls', {
   /**
    * Called on each scene tick.
    */
-  // tick: function (t) { },
+  tick: function (t) {
+      var data = this.data;
+      console.log(data.orientation);
+  },
 
   /**
    * Called when entity pauses.
