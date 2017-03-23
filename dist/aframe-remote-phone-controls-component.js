@@ -191,11 +191,6 @@
 	    if (remotephonestate === undefined)
 	      return;
 	      
-	    if (this.isProxied())
-	    {
-	    console.log(remotephonestate);
-	    }
-
 	    var data = this.data;
 	    var orientation = data.orientation;
 
