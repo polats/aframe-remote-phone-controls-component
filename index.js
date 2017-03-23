@@ -33,6 +33,12 @@ AFRAME.registerComponent('remote-phone-controls', {
       z: 0.0
     }
 
+    this.data.remotephonestate =
+    {
+      orientation: {},
+      touching: false
+    };
+
     // stores current and initial phone orientation
     this.data.orientation =
     {
@@ -60,39 +66,29 @@ AFRAME.registerComponent('remote-phone-controls', {
     }
 
     var orientation = data.orientation;
+    var remotephonestate = data.remotephonestate;
 
     // orientation listener
     window.addEventListener('deviceorientation', function (evt) {
 
-      if (orientation.initial_value == null)
-      {
-          // get initial start rotation
-          orientation.initial_value =
-          {
-            alpha: evt.alpha,
-            beta: evt.beta,
-            gamma: evt.gamma
-          }
-
-          data.raycast_initialized = true;
-      }
-
-      // store event orientation values
-      orientation.alpha =  evt.alpha;
-      orientation.beta = evt.beta;
-      orientation.gamma = evt.gamma;
+      remotephonestate.orientation.alpha = evt.alpha;
+      remotephonestate.orientation.beta = evt.beta;
+      remotephonestate.orientation.gamma = evt.gamma;
 
 		}, true);
 
     // touch to recenter cursor
     window.addEventListener('touchstart', function (evt) {
 
-      orientation.initial_value =
+      if (orientation.initial_value != null)
       {
-          alpha: orientation.alpha,
-          beta: orientation.beta,
-          gamma: orientation.gamma
-      };
+        orientation.initial_value =
+        {
+            alpha: orientation.alpha,
+            beta: orientation.beta,
+            gamma: orientation.gamma
+        };
+      }
 
 		}, true);
 
@@ -143,12 +139,48 @@ AFRAME.registerComponent('remote-phone-controls', {
    */
   remove: function () { },
 
+  updateOrientation: function () {
+    var remotephonestate = this.getRemotePhoneState();
+    var data = this.data;
+    var orientation = data.orientation;
+
+    if (orientation.initial_value == null)
+    {
+
+      if (remotephonestate.orientation.alpha != undefined)
+      {
+          // set initial start rotation
+          orientation.initial_value =
+          {
+            alpha: remotephonestate.orientation.alpha,
+            beta: remotephonestate.orientation.beta,
+            gamma: remotephonestate.orientation.gamma
+          };
+
+          data.raycast_initialized = true;
+        }
+    }
+
+    if (data.raycast_initialized)
+    {
+
+      // store event orientation values
+      orientation.alpha =  remotephonestate.orientation.alpha;
+      orientation.beta = remotephonestate.orientation.beta;
+      orientation.gamma = remotephonestate.orientation.gamma;
+
+    }
+  },
+
   /**
    * Called on each scene tick.
    */
   tick: function (t) {
       var data = this.data;
       var el = this.el;
+
+      // update orientation based on remotephonestate
+      this.updateOrientation();
 
       if (data.raycast_initialized) {
 
@@ -174,5 +206,19 @@ AFRAME.registerComponent('remote-phone-controls', {
    * Called when entity resumes.
    * Use to continue or add any dynamic or background behavior such as events.
    */
-  play: function () { }
+  play: function () { },
+
+
+  getRemotePhoneState: function () {
+    if (this.isProxied()) {
+      return this.el.sceneEl.components['proxy-controls'].getRemotePhoneState();
+    }
+    return this.data.remotephonestate;
+  },
+
+  isProxied: function () {
+    var proxyControls = this.el.sceneEl.components['proxy-controls'];
+    return proxyControls && proxyControls.isConnected();
+  }
+
 });
