@@ -142,11 +142,14 @@ AFRAME.registerComponent('remote-phone-controls', {
   updateOrientation: function () {
     var remotephonestate = this.getRemotePhoneState();
 
+    if (remotephonestate === undefined)
+      return;
+      
     if (this.isProxied())
     {
     console.log(remotephonestate);
     }
-    
+
     var data = this.data;
     var orientation = data.orientation;
 
